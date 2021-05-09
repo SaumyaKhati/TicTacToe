@@ -1,6 +1,12 @@
 # Global variable that repesents game board.
 board = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
+move_list = [
+    [0, 0], [0, 1], [0, 2]
+    [1, 0], [1, 1], [1, 2]
+    [2, 0], [2, 1], [2, 2]
+]
 player_turn = 0
+game_over = false
 
 # Main Function. 
 def main():
@@ -57,11 +63,17 @@ def check_win():
     return 0
 
 
+def get_move(move):
+    return move_list[move - 1]
+    
+    
 def player_move():
     while True:
         print_board()
         print("\n\tPlayer " + player_turn + ", enter your move (1-9): ")
         move = input("")
+        
+        # Check if move is valid. 
         if len(move) > 1 or not move.isnumeric(): 
             print("Invalid move. Please enter a number bet. 1-9")
             continue
@@ -72,6 +84,15 @@ def player_move():
             print("Invalid move. That square is not free. Try again.")
             continue
         
+        # Simulate move. 
+        move_set = get_move(int(move))
+        if player_turn == 1:
+            board[move_set[0]][move_set[1]] = 'x'
+            player_turn = 2
+        else:
+            board[move_set[0]][move_set[1]] = 'o'
+            player_turn = 1
+
 
 # Run main function. 
 if __name__ == "__main__":
