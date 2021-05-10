@@ -26,7 +26,7 @@ def execute_game():
     clear_board()
     while not game_over: 
         player_move()
-        winner = check_win()
+        winner = check_win(board)
         if winner == 0 and not full_board():
             continue
         game_over = True
@@ -112,7 +112,7 @@ def initialize_board():
             init += 1
 
 
-def check_win():
+def check_win(board):
     # Check vertical and horizontal rows. 
     for i in range(3):
         if (board[i][0] == 'x' and board[i][1] == 'x' and board[i][2] == 'x'):
