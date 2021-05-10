@@ -1,22 +1,23 @@
 import sys, random, os
 
-# Global variable that repesents game board.
+# Global Variables.
 board = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
-move_list = [
-    [0, 0], [0, 1], [0, 2],
-    [1, 0], [1, 1], [1, 2],
-    [2, 0], [2, 1], [2, 2]
-]
+move_list = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
 player_turn = 0
 game_over = False
 winner = 0
 
-# Main Function. 
+
 def main():
+    execute_game()
+
+
+def execute_game():
     global player_turn, game_over, winner
     choice = start_menu()
+    clear_screen()
     if choice == 3:
-        print("\tThanks for playing Tic Tac Toe. Goodbye!")
+        print("\tThanks for playing Tic Tac Toe. Goodbye!\n")
         sys.exit()
     elif choice == 2:
         instructions()
@@ -34,6 +35,18 @@ def main():
         print("\n\tThis game was a tie! Better luck next time!\n")
     else:
         print("\n\tCongratulations, player " + str(winner) +"! You won!\n")
+    while True:
+        print("\n\tWould you like to play again? (y/n)")
+        move = input("\tAnswer: ").lower()
+        clear_screen()
+        if move == 'y' or move == 'yes':
+            execute_game()
+        elif move == 'n' or move == 'no':
+            print("\n\tThanks for playing Tic Tac Toe. Goodbye!\n")
+            sys.exit()
+        else:
+            print("\tInvalid choice. Please enter yes(y) or no (n).")
+
 
 
 def start_menu():
@@ -60,13 +73,13 @@ def instructions():
           "\n\t   and the appropriate piece will be automatically placed for you!\n")
     print_board()
     while True:
-        print("\n\tWould you like to play the game? (y/n): ")
+        print("\n\tWould you like to play the game? (y/n)")
         move = input("\tAnswer: ").lower()
         if move == 'y' or move == 'yes':
             clear_screen()
             return 0
         elif move == 'n' or move == 'no':
-            print("\n\tGoodbye!")
+            print("\n\tGoodbye!\n")
             sys.exit()
         else:
             clear_screen()
