@@ -15,13 +15,12 @@ winner = 0
 def main():
     global player_turn, game_over, winner
     choice = start_menu()
-    if choice == 2:
+    if choice == 3:
         print("\tThanks for playing Tic Tac Toe. Goodbye!")
         sys.exit()
+    elif choice == 2:
+        instructions()
     player_turn = random.randint(1,2)
-    print("\n" * 2 + "\t" * 6 + "INSTRUCTIONS\n\n\t1) Decide who is player 1 and 2." + 
-          "\n\t2) When it's your turn, simply enter the CORRESPONDING number for the squares shown below!\n\n")
-    print_board()
     clear_board()
     while not game_over: 
         player_move()
@@ -39,16 +38,40 @@ def main():
 
 def start_menu():
     while True:
-        print("\tWelcome to Tic Tac Toe. Please choose one of the following options:")
-        print("\t1) Play the game. (Enter 1)")
-        print("\t2) Quit. (Enter 2)")
+        print("\n\tWelcome to Tic Tac Toe. Please choose one of the following options:")
+        print("\t1) Play the game.")
+        print("\t2) Read the instructions.")
+        print("\t3) Quit.")
         choice = input("").strip()
-        if not choice == '1' and not choice == '2':
-            print("\tInvalid move. Please enter 1 or 2.")
+        if not choice in ['1', '2', '3']:
+            print("\tInvalid move. Please enter 1, 2, or 3.")
             continue
         else:
             break
     return int(choice)
+
+
+def instructions():
+    print("\n" * 2 + "\t" * 6 + "INSTRUCTIONS\n\n\t1) Tic-Tac-Toe is a two player game." +  
+          "\n\t2) The classic version is played on a 3x3 board." + 
+          "\n\t3) One player places 'x' pieces, the other places 'o'." +
+          "\n\t4) The objective is to place your pieces consecutively on a row or column, or either diagonal." +
+          "\n\t5) To make your move, you simply enter a number corresponding to the board squares (as shown below)," +
+          "\n\t   and the appropriate piece will be automatically placed for you!\n")
+    print_board()
+    while True:
+        print("\n\tWould you like to play the game? (y/n): ")
+        move = input("\tAnswer: ").lower()
+        if move == 'y' or move == 'yes':
+            clear_screen()
+            return 0
+        elif move == 'n' or move == 'no':
+            print("\n\tGoodbye!")
+            sys.exit()
+        else:
+            clear_screen()
+            print("\tInvalid choice. Please enter yes(y) or no (n).")
+
 
 
 def print_board():
