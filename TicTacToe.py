@@ -107,7 +107,7 @@ def get_move(move):
     
     
 def player_move():
-    global player_turn # refer to global var. inside function. 
+    global player_turn 
     while True:
         print("\n\tPlayer " + str(player_turn) + ", enter your move (1-9): ")
         print_board()
