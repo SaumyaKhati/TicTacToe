@@ -2,6 +2,7 @@ import sys, random, os
 
 # Global Variables.
 board = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
+# Store array indices corresponding to each move on the board. Ex: 1 = (0, 0), 2 = (0, 1), etc. 
 move_list = [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
 player_turn = 0
 game_over = False
@@ -11,7 +12,7 @@ winner = 0
 def main():
     execute_game()
 
-
+# Simulates game.
 def execute_game():
     global player_turn, game_over, winner
     choice = start_menu()
@@ -75,14 +76,13 @@ def instructions():
     while True:
         print("\n\tWould you like to play the game? (y/n)")
         move = input("\tAnswer: ").lower()
+        clear_screen()
         if move == 'y' or move == 'yes':
-            clear_screen()
             return 0
         elif move == 'n' or move == 'no':
-            print("\n\tGoodbye!\n")
+            print("\n\tGoodbye. Hope you try out the game next time!\n")
             sys.exit()
         else:
-            clear_screen()
             print("\tInvalid choice. Please enter yes(y) or no (n).")
 
 
