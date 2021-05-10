@@ -1,4 +1,4 @@
-import sys, random, os
+import sys, random, os, math
 
 # Global Variables.
 board = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
@@ -14,28 +14,35 @@ def main():
 
 # Simulates game.
 def execute_game():
+    choice = start_menu()
+
+    if choice == 1:
+        player_game()
+    elif choice == 2:
+        computer_game()
+    elif choice == 3:
+        instructions()
+        clear_board()
+    else:
+        print("\tThanks for playing Tic Tac Toe. Goodbye!\n")
+        sys.exit()
+
+
+def player_game():
     global player_turn, game_over, winner
-    
-    # "Set" variables to default.
+    # "Set" default game state.
     clear_screen()
     clear_board()
     game_over = False
     winner = 0
     player_turn = 0
 
-    choice = start_menu()
-    if choice == 3:
-        print("\tThanks for playing Tic Tac Toe. Goodbye!\n")
-        sys.exit()
-    elif choice == 2:
-        instructions()
-        clear_board()
-    player_turn = (random.randint(1,100) % 2) + 1
+    player_turn = random.randint(0, 1) + 1
     clear_screen()
     while not game_over: 
         player_move()
         winner = check_win(board)
-        if winner == 0 and not full_board():
+        if winner == 0 and not full_board(board):
             continue
         game_over = True
     print()
@@ -58,15 +65,72 @@ def execute_game():
             print("\tInvalid choice. Please enter yes(y) or no (n).")
 
 
+def computer_game():
+    global player_turn, game_over, winner
+    # "Set" default game state.
+    clear_screen()
+    clear_board()
+    game_over = False
+    winner = 0
+    player_turn = 0
+    computer = 0
+
+    player_turn = random.randint(0, 1) + 1
+    computer = random.randint(0, 1) + 1
+    clear_screen()
+
+    # Play game.
+    while not game_over: 
+
+        if not player_turn == computer:
+            player_move()
+        else:
+            best = best_move(board, computer)
+            if computer == 1:
+                board[best[0]][best[1]] = 'x'
+                player_turn = 2
+            else:
+                board[best[0]][best[1]] = 'o'
+                player_turn = 1
+
+        winner = check_win(board)
+        if winner == 0 and not full_board(board):
+            continue
+        game_over = True
+    
+    print()
+    print_board()
+    if winner == 0:
+        print("\n\tThis game was a tie! Better luck next time!\n")
+    elif winner == computer:
+        print("\n\tThe computer won! Better luck next time!\n")
+    else:
+        print("\n\tCongrats! You won the game.\n")
+
+    # Ensure valid input.
+    while True:
+        print("\n\tWould you like to play again? (y/n)")
+        move = input("\tAnswer: ").lower()
+        clear_screen()
+        if move == 'y' or move == 'yes':
+            execute_game()
+        elif move == 'n' or move == 'no':
+            print("\n\tThanks for playing Tic Tac Toe. Goodbye!\n")
+            sys.exit()
+        else:
+            print("\tInvalid choice. Please enter yes(y) or no (n).")
+
+
 def start_menu():
     while True:
         print("\n\tWelcome to Tic Tac Toe. Please choose one of the following options:")
-        print("\t1) Play the game.")
-        print("\t2) Read the instructions.")
-        print("\t3) Quit.")
+        print("\t1) Play the game (2 player version).")
+        print("\t2) Play the computer.")
+        print("\t3) Read the instructions.")
+        print("\t4) Quit.")
         choice = input("").strip()
-        if not choice in ['1', '2', '3']:
-            print("\tInvalid move. Please enter 1, 2, or 3.")
+        if not choice in ['1', '2', '3', '4']:
+            print("\tInvalid move. Please enter a number within 1-4.")
             continue
         else:
             break
@@ -78,18 +142,18 @@ def instructions():
           "\n\t2) The classic version is played on a 3x3 board." + 
           "\n\t3) One player places 'x' pieces, the other places 'o'." +
           "\n\t4) The objective is to place your pieces consecutively on a row or column, or either diagonal." +
-          "\n\t5) To make your move, you simply enter a number corresponding to the board squares (as shown below)," +
+          "\n\t5) To make your move, you enter a number matching the board squares (as shown below)," +
           "\n\t   and the appropriate piece will be automatically placed for you!\n")
     initialize_board()
     print_board()
     while True:
-        print("\n\tWould you like to play the game? (y/n)")
+        print("\n\tWould you like to play now? (y/n)")
         move = input("\tAnswer: ").lower()
         clear_screen()
         if move == 'y' or move == 'yes':
-            return 0
+            execute_game()
         elif move == 'n' or move == 'no':
-            print("\n\tGoodbye. Hope you try out the game next time!\n")
+            print("\n\tAww....Goodbye. Hope you try out the game next time!\n")
             sys.exit()
         else:
             print("\tInvalid choice. Please enter yes(y) or no (n).")
@@ -183,7 +247,7 @@ def is_free(move):
     return board[move[0]][move[1]] == '-'
 
 
-def full_board():
+def full_board(board):
     for i in range(3):
         for j in range(3):
             if board[i][j] == '-':
@@ -193,6 +257,97 @@ def full_board():
 
 def clear_screen():
     os.system('cls' if os.name=='nt' else 'clear')
+
+
+# Returns best move (as a list) for current player using minimax algorithm.
+def best_move(board, current_player):
+    
+    if current_player == 1:
+        max_score = -math.inf
+        top_move = [-1, -1]
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '-':
+                    board[i][j] = 'x'
+                    score = minimax(board, 2)
+                    board[i][j] = '-'
+                    if score > max_score:
+                        max_score = score
+                        top_move = [i, j]
+    else:
+        min_score = math.inf
+        top_move = [3, 3]
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '-':
+                    board[i][j] = 'o'
+                    score = minimax(board, 1)
+                    board[i][j] = '-'
+                    if score < min_score:
+                        min_score = score
+                        top_move = [i, j]
+    return top_move
+
+
+# Returns max score for current pos. 
+def minimax(board, current_player):
+    # Store evaluation of position. 
+    state = is_game_over(board)
+    # If game is over, return static evaluation of pos. 
+    if state[0] == True:
+        return state[1]
+    
+    # Check if currentPlayer is the "maximing" player
+    if current_player == 1:
+        maxEval = -math.inf
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '-':
+                    board[i][j] = 'x'
+                    eval = minimax(board, 2)
+                    board[i][j] = '-'
+                    if eval > maxEval:
+                        maxEval = eval
+        return maxEval
+    else:
+        minEval = math.inf
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == '-':
+                    board[i][j] = 'o'
+                    eval = minimax(board, 1)
+                    board[i][j] = '-'
+                    if eval < minEval:
+                        minEval = eval
+        return minEval
+
+
+
+
+ 
+    
+
+
+# Evaluates current position of game. 
+def is_game_over(board):
+    res = eval_pos(board)
+    if res == 2:
+        return [False, 2]
+    else:
+        return [True, res]
+
+
+def eval_pos(board):
+    val = check_win(board)
+
+    if val == 1:
+        return val
+    elif val == 2:
+        return -1
+    if full_board(board):
+        return 0
+    else: 
+        return 2
 
 
 # Run main function. 
