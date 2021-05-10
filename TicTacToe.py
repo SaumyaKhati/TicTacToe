@@ -29,7 +29,7 @@ def execute_game():
         sys.exit()
     elif choice == 2:
         instructions()
-    player_turn = random.randint(1,2)
+    player_turn = (random.randint(1,100) % 2) + 1
     while not game_over: 
         player_move()
         winner = check_win(board)
