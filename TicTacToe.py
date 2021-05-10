@@ -73,7 +73,6 @@ def instructions():
             print("\tInvalid choice. Please enter yes(y) or no (n).")
 
 
-
 def print_board():
     print("\t+" + "-" * 3 + "+" + "-" * 3 + "+" + "-" * 3 + "+")
     for i in range(3):
