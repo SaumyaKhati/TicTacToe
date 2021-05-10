@@ -29,7 +29,9 @@ def execute_game():
         sys.exit()
     elif choice == 2:
         instructions()
+        clear_board()
     player_turn = (random.randint(1,100) % 2) + 1
+    clear_screen()
     while not game_over: 
         player_move()
         winner = check_win(board)
@@ -42,6 +44,7 @@ def execute_game():
         print("\n\tThis game was a tie! Better luck next time!\n")
     else:
         print("\n\tCongratulations, player " + str(winner) +"! You won!\n")
+    # Ensure valid input.
     while True:
         print("\n\tWould you like to play again? (y/n)")
         move = input("\tAnswer: ").lower()
@@ -77,6 +80,7 @@ def instructions():
           "\n\t4) The objective is to place your pieces consecutively on a row or column, or either diagonal." +
           "\n\t5) To make your move, you simply enter a number corresponding to the board squares (as shown below)," +
           "\n\t   and the appropriate piece will be automatically placed for you!\n")
+    initialize_board()
     print_board()
     while True:
         print("\n\tWould you like to play the game? (y/n)")
@@ -114,7 +118,7 @@ def initialize_board():
     global board
     for i in range(3):
         for j in range(3):
-            board[i][j] = init
+            board[i][j] = str(init)
             init += 1
 
 
