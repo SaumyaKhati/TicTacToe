@@ -102,7 +102,7 @@ def clear_board():
         for j in range(3):
             board[i][j] = '-'
 
-
+# Board setup for instructions only
 def initialize_board():
     init = 1 
     global board
@@ -133,14 +133,13 @@ def check_win():
         return 2
     elif (board[0][2] == 'o' and board[1][1] == 'o' and board[2][0] == 'o'):
         return 2
-    
     return 0
 
-
+# Get the array index pos. corresponding to move.
 def get_move(move):
     return move_list[move - 1]
     
-    
+# Simulates a player move.  
 def player_move():
     global player_turn 
     while True:
@@ -158,7 +157,6 @@ def player_move():
             print("\n\tInvalid move. That square is not free. Try again.")
             continue
         
-        # Simulate move. 
         move_set = get_move(int(move))
         if player_turn == 1:
             board[move_set[0]][move_set[1]] = 'x'
