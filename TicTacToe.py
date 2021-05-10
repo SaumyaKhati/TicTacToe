@@ -49,7 +49,6 @@ def execute_game():
             print("\tInvalid choice. Please enter yes(y) or no (n).")
 
 
-
 def start_menu():
     while True:
         print("\n\tWelcome to Tic Tac Toe. Please choose one of the following options:")
@@ -102,6 +101,7 @@ def clear_board():
         for j in range(3):
             board[i][j] = '-'
 
+
 # Board setup for instructions only
 def initialize_board():
     init = 1 
@@ -134,6 +134,7 @@ def check_win(board):
     elif (board[0][2] == 'o' and board[1][1] == 'o' and board[2][0] == 'o'):
         return 2
     return 0
+
 
 # Get the array index pos. corresponding to move.
 def get_move(move):
