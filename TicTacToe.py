@@ -322,12 +322,6 @@ def minimax(board, current_player):
         return minEval
 
 
-
-
- 
-    
-
-
 # Evaluates current position of game. 
 def is_game_over(board):
     res = eval_pos(board)
