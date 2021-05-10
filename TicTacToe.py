@@ -15,15 +15,21 @@ def main():
 # Simulates game.
 def execute_game():
     global player_turn, game_over, winner
-    choice = start_menu()
+    
+    # "Set" variables to default.
     clear_screen()
+    clear_board()
+    game_over = False
+    winner = 0
+    player_turn = 0
+
+    choice = start_menu()
     if choice == 3:
         print("\tThanks for playing Tic Tac Toe. Goodbye!\n")
         sys.exit()
     elif choice == 2:
         instructions()
     player_turn = random.randint(1,2)
-    clear_board()
     while not game_over: 
         player_move()
         winner = check_win(board)
@@ -112,26 +118,26 @@ def initialize_board():
             init += 1
 
 
-def check_win(board):
+def check_win(game_board):
     # Check vertical and horizontal rows. 
     for i in range(3):
-        if (board[i][0] == 'x' and board[i][1] == 'x' and board[i][2] == 'x'):
+        if (game_board[i][0] == 'x' and game_board[i][1] == 'x' and game_board[i][2] == 'x'):
             return 1
-        elif (board[0][i] == 'x' and board[1][i] == 'x' and board[2][i] == 'x'):
+        elif (game_board[0][i] == 'x' and game_board[1][i] == 'x' and game_board[2][i] == 'x'):
             return 1
-        elif (board[i][0] == 'o' and board[i][1] == 'o' and board[i][2] == 'o'):
+        elif (game_board[i][0] == 'o' and game_board[i][1] == 'o' and game_board[i][2] == 'o'):
             return 2
-        elif (board[0][i] == 'o' and board[1][i] == 'o' and board[2][i] == 'o'):
+        elif (game_board[0][i] == 'o' and game_board[1][i] == 'o' and game_board[2][i] == 'o'):
             return 2
     
     # Check diagonals.
-    if (board[0][0] == 'x' and board[1][1] == 'x' and board[2][2] == 'x'):
+    if (game_board[0][0] == 'x' and game_board[1][1] == 'x' and game_board[2][2] == 'x'):
         return 1
-    elif (board[0][2] == 'x' and board[1][1] == 'x' and board[2][0] == 'x'):
+    elif (game_board[0][2] == 'x' and game_board[1][1] == 'x' and game_board[2][0] == 'x'):
         return 1
-    elif (board[0][0] == 'o' and board[1][1] == 'o' and board[2][2] == 'o'):
+    elif (game_board[0][0] == 'o' and game_board[1][1] == 'o' and game_board[2][2] == 'o'):
         return 2
-    elif (board[0][2] == 'o' and board[1][1] == 'o' and board[2][0] == 'o'):
+    elif (game_board[0][2] == 'o' and game_board[1][1] == 'o' and game_board[2][0] == 'o'):
         return 2
     return 0
 
